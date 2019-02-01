@@ -1,4 +1,7 @@
-package org.iota.spamsim;
+package org.iota.spamsim.network;
+
+import org.iota.spamsim.Constants;
+import org.iota.spamsim.nodes.Node;
 
 import java.util.Collection;
 import java.util.Collections;

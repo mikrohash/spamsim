@@ -2,6 +2,9 @@ package org.iota.spamsim;
 
 public class Constants {
 
+    // amount of worker threads to distribute the simulation on
+    public static final int THREADS = 4;
+
     // amount of times to run the entire simulation, to gather a weighted average
     public static final int SIMULATIONS = 500;
 

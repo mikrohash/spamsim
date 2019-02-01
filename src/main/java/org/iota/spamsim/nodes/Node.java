@@ -1,4 +1,6 @@
-package org.iota.spamsim;
+package org.iota.spamsim.nodes;
+
+import org.iota.spamsim.network.TransactionTransfer;
 
 public interface Node {
 

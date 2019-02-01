@@ -1,4 +1,7 @@
-package org.iota.spamsim;
+package org.iota.spamsim.nodes;
+
+import org.iota.spamsim.network.Transaction;
+import org.iota.spamsim.network.TransactionTransfer;
 
 import java.util.HashSet;
 import java.util.LinkedList;
