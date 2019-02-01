@@ -1,13 +1,12 @@
 package org.iota.spamsim.nodes;
 
-import org.iota.spamsim.Constants;
-import org.iota.spamsim.network.Transaction;
+import org.iota.spamsim.Params;
 import org.iota.spamsim.network.TransactionTransfer;
 
 public class MaliciousNode extends CfbNode {
 
     public MaliciousNode() {
-        super(Constants.MALICIOUS_RATE);
+        super(Params.maliciousRate.getValue());
     }
 
     @Override

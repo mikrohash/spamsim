@@ -1,6 +1,6 @@
 package org.iota.spamsim.simulation;
 
-import org.iota.spamsim.Constants;
+import org.iota.spamsim.Params;
 import org.iota.spamsim.network.Network;
 import org.iota.spamsim.network.RandomNetwork;
 import org.iota.spamsim.nodes.CfbNode;
@@ -27,11 +27,11 @@ public class SimWorker extends Thread {
         while (simulation.keepSimulating()) {
 
             Set<Node> honestNodes = new HashSet<>();
-            for (int j = 0; j < Constants.HONEST_NODES; j++)
-                honestNodes.add(new CfbNode(Constants.HONEST_RATE));
+            for (int j = 0; j < Params.honestNodes.getValue(); j++)
+                honestNodes.add(new CfbNode(Params.honestRate.getValue()));
 
             Set<Node> maliciousNodes = new HashSet<>();
-            for (int j = 0; j < Constants.MALICIOUS_NODES; j++)
+            for (int j = 0; j < Params.maliciousNodes.getValue(); j++)
                 maliciousNodes.add(new MaliciousNode());
 
             Set<Node> allNodes = new HashSet<>();
@@ -39,14 +39,14 @@ public class SimWorker extends Thread {
             allNodes.addAll(maliciousNodes);
             Network network = new RandomNetwork(allNodes);
 
-            for (int it = 0; it < Constants.ITERATIONS; it++)
+            for (int it = 0; it < Params.iterations.getValue(); it++)
                 network.iterate();
 
             double phs = 0, pms = 0;
             for(Node honest : honestNodes)
-                phs += network.measureAverageAmountOfDeliveredTransactions(honest) / Constants.ITERATIONS / Constants.HONEST_RATE / honestNodes.size();
+                phs += network.measureAverageAmountOfDeliveredTransactions(honest) / Params.iterations.getValue() / Params.honestRate.getValue() / honestNodes.size();
             for(Node malicious : maliciousNodes)
-                pms += network.measureAverageAmountOfDeliveredTransactions(malicious) / Constants.ITERATIONS / Constants.MALICIOUS_RATE / maliciousNodes.size();
+                pms += network.measureAverageAmountOfDeliveredTransactions(malicious) / Params.iterations.getValue() / Params.maliciousRate.getValue() / maliciousNodes.size();
             result.addRound(phs, pms);
         }
 

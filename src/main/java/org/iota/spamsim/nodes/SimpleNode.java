@@ -47,7 +47,6 @@ public class SimpleNode implements Node {
     }
 
     public void acceptTransactionsFromNeighbors() {
-        assert incomingTransfers.size() < 1000;
         for(TransactionTransfer incoming : incomingTransfers) {
             if(acceptTransfer(incoming)) {
                 outgoingTransfers.add(incoming);

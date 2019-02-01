@@ -1,6 +1,6 @@
 package org.iota.spamsim.network;
 
-import org.iota.spamsim.Constants;
+import org.iota.spamsim.Params;
 import org.iota.spamsim.nodes.Node;
 
 import java.util.Collection;
@@ -19,7 +19,7 @@ public class RandomNetwork extends Network {
 
         int iterations = 0;
 
-        for (List<Node> poolOfNotNeighboredNodes = new LinkedList<>(nodes); poolOfNotNeighboredNodes.size() > 1; poolOfNotNeighboredNodes.removeIf((Node node) -> node.getAmountOfNeighbors() >= Constants.NEIGHBORS_PER_NODE)) {
+        for (List<Node> poolOfNotNeighboredNodes = new LinkedList<>(nodes); poolOfNotNeighboredNodes.size() > 1; poolOfNotNeighboredNodes.removeIf((Node node) -> node.getAmountOfNeighbors() >= Params.neighborsPerNode.getValue())) {
             Collections.shuffle(poolOfNotNeighboredNodes);
 
             Node randomNodeA = pickRandomNode(poolOfNotNeighboredNodes);
@@ -34,7 +34,7 @@ public class RandomNetwork extends Network {
                 System.err.println(poolOfNotNeighboredNodes.size());
 
             for(Node node : nodes)
-                assert node.getAmountOfNeighbors() >= Constants.NEIGHBORS_PER_NODE || poolOfNotNeighboredNodes.contains(node);
+                assert node.getAmountOfNeighbors() >= Params.neighborsPerNode.getValue() || poolOfNotNeighboredNodes.contains(node);
         }
     }
 
