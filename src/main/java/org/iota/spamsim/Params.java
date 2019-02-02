@@ -19,7 +19,7 @@ public enum Params {
 
         // total amount of malicious participants in the network and their rate of issued transactions per iteration
         maliciousNodes(1),
-        maliciousRate(19);
+        maliciousRate(10);
 
         private final int defaultValue;
         private final int min, max;
@@ -27,12 +27,14 @@ public enum Params {
 
         Params(int defaultValue) {
                 this.defaultValue = defaultValue;
+                this.value = defaultValue;
                 this.min = 0;
                 this.max = Integer.MAX_VALUE;
         }
 
         Params(int defaultValue, int min, int max) {
                 this.defaultValue = defaultValue;
+                this.value = defaultValue;
                 this.min = min;
                 this.max = max;
         }

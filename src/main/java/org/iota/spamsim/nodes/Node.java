@@ -2,6 +2,8 @@ package org.iota.spamsim.nodes;
 
 import org.iota.spamsim.network.TransactionTransfer;
 
+import java.util.List;
+
 public interface Node {
 
     void receiveTransactionTransfer(TransactionTransfer transfer);
@@ -14,7 +16,13 @@ public interface Node {
 
     int getAmountOfNeighbors();
 
-    void log();
-
     void neighbor(Node node);
+
+    void unneighbor(Node node);
+
+    List<Node> getNeighbors();
+
+    int getID();
+
+    boolean isNeighboredTo(Node node);
 }

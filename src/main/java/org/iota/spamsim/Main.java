@@ -10,6 +10,9 @@ public class Main {
     }
 
     private static void runAllSimulations() {
+
+        runDefaultSettings();
+
         for(Params par : Params.values()) {
 
             switch (par) {
@@ -28,7 +31,7 @@ public class Main {
 
             for(int i = 0; i < maxTest; i++) {
 
-                if(i == 4 && par != Params.honestNodes)
+                if(i == medianTest && par != Params.honestNodes)
                     continue; // do run default setting only once
 
                 Params.reset();
@@ -52,11 +55,18 @@ public class Main {
         }
     }
 
+    private static void runDefaultSettings() {
+        long a = System.currentTimeMillis();
+        SimResult result = Simulation.run();
+        System.out.println("***** DEFAULT SETTINGS *****");
+        System.out.println("DURATION:  " + (System.currentTimeMillis() - a) + "ms");
+        System.out.println("HONEST:    " + result.getHonestScore());
+        System.out.println("MALICIOUS: " + result.getMaliciousScore());
+        System.out.println("SCORE:     " + (result.getHonestScore() / result.getMaliciousScore()));
+        System.out.println();
+    }
+
     private static void logResult(Params par, SimResult result, long duration) {
-        //System.out.println("***** " + par.name() + " = "+par.getValue()+" *****");
-        //System.out.println("DURATION:  " + duration + "ms");
-        //System.out.println("SCORE:     " + (result.getHonestScore() / result.getMaliciousScore()));
-        //System.out.println();
         System.out.println(par.getValue()+" "+result.getHonestScore()+" "+result.getMaliciousScore());
     }
 }

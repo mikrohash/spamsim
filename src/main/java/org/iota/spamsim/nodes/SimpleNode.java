@@ -72,22 +72,32 @@ public class SimpleNode implements Node {
         return neighbors.size();
     }
 
-    public static void neighbor(Node a, Node b) {
-        if(a == b)
-            throw new IllegalArgumentException("Can't neighbor a node to itself.");
-        if(a == null || b == null)
-            throw new NullPointerException("Nodes must not be null.");
-        //if(a.neighbors.contains(b) || b.neighbors.contains(a))
-        //    throw new IllegalArgumentException("Node's are already neighbored.");
-        a.neighbor(b);
-        b.neighbor(a);
+    @Override
+    public boolean isNeighboredTo(Node node) {
+        return neighbors.contains(node);
     }
 
     public void neighbor(Node node) {
+        if(node == this)
+            throw new IllegalArgumentException("Node cannot be neighbored with itself.");
+        if(isNeighboredTo(node))
+            throw new IllegalArgumentException("Node is already neighbored to this node.");
         neighbors.add(node);
     }
 
-    public void log() {
-        System.out.println(id + ": " + incomingTransfers.size() + "/" + outgoingTransfers.size() + "/" + tangle.size());
+    @Override
+    public void unneighbor(Node node) {
+        if(!neighbors.remove(node))
+            throw new IllegalArgumentException("Node is not neighbored to this node.");
+    }
+
+    @Override
+    public List<Node> getNeighbors() {
+        return new LinkedList<>(neighbors);
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 }

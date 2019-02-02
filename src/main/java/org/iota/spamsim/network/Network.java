@@ -23,12 +23,6 @@ public abstract class Network {
             node.submitTransactionsToNeighbors();
     }
 
-    public void log() {
-        System.out.println("=== ITERATION " + iteration + " ===");
-        for(Node node : nodes)
-            node.log();
-    }
-
     public double measureAverageAmountOfDeliveredTransactions(Node node) {
         if(!nodes.contains(node))
             throw new IllegalArgumentException("Node not part of network.");
