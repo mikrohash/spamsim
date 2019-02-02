@@ -24,8 +24,11 @@ public class RandomNetwork extends Network {
             if(nodes.size()%2 == 1 && poolOfNotNeighboredNodes.size() == 1 && poolOfNotNeighboredNodes.get(0).getAmountOfNeighbors() == Params.neighborsPerNode.getValue()-1)
                 break; // can't do anything about this unfortunately
 
-            while (!areMoreConnectionsPossible(poolOfNotNeighboredNodes) && nodes.size() > Params.neighborsPerNode.getValue())
+            while (!areMoreConnectionsPossible(poolOfNotNeighboredNodes)) {
+                if(nodes.size() <= Params.neighborsPerNode.getValue())
+                    return; // can't do anything about this unfortunately
                 breakUpExistingNeighborship(poolOfNotNeighboredNodes);
+            }
 
             pairTwoRandomNodes(poolOfNotNeighboredNodes);
         }
