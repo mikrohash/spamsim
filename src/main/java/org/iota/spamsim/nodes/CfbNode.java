@@ -24,7 +24,7 @@ public class CfbNode extends SimpleNode {
         Collections.shuffle(neighborsOrderedByTransferCount);
         neighborsOrderedByTransferCount.sort((a, b) -> Integer.compare(neighborsTransferCounts[neighbors.indexOf(b)], neighborsTransferCounts[neighbors.indexOf(a)]));
         assert neighborsOrderedByTransferCount.size() == 0 || neighborsTransferCounts[neighbors.indexOf(neighborsOrderedByTransferCount.getFirst())] >= neighborsTransferCounts[neighbors.indexOf((neighborsOrderedByTransferCount).getLast())];
-        ignoredNeighbors = new HashSet<>(neighborsOrderedByTransferCount.subList(0, neighborsOrderedByTransferCount.size() / 3));
+        ignoredNeighbors = new HashSet<>(neighborsOrderedByTransferCount.subList(0, (int)Math.ceil(neighborsOrderedByTransferCount.size() / 3.0)));
     }
 
     @Override
