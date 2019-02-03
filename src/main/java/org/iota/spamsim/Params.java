@@ -11,7 +11,7 @@ public enum Params {
         iterations(40),
 
         // the amount of neighbors each node should ideally have (not guaranteed, a single node might have less)
-        neighborsPerNode(3, 2, 5),
+        neighborsPerNode(3, 2, 6),
 
         // total amount of honest participants in the network and their rate of issued transactions per iteration
         honestNodes(15),

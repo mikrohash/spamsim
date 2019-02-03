@@ -13,9 +13,7 @@ public class CfbNode extends SimpleNode {
     }
 
     @Override
-    public void submitTransactionsToNeighbors() {
-        super.submitTransactionsToNeighbors();
-
+    public void acceptTransactionsFromNeighbors() {
         int[] neighborsTransferCounts = new int[neighbors.size()];
         for(TransactionTransfer incoming : incomingTransfers)
             neighborsTransferCounts[neighbors.indexOf(incoming.sender)]++;
@@ -25,6 +23,8 @@ public class CfbNode extends SimpleNode {
         neighborsOrderedByTransferCount.sort((a, b) -> Integer.compare(neighborsTransferCounts[neighbors.indexOf(b)], neighborsTransferCounts[neighbors.indexOf(a)]));
         assert neighborsOrderedByTransferCount.size() == 0 || neighborsTransferCounts[neighbors.indexOf(neighborsOrderedByTransferCount.getFirst())] >= neighborsTransferCounts[neighbors.indexOf((neighborsOrderedByTransferCount).getLast())];
         ignoredNeighbors = new HashSet<>(neighborsOrderedByTransferCount.subList(0, (int)Math.ceil(neighborsOrderedByTransferCount.size() / 3.0)));
+
+        super.acceptTransactionsFromNeighbors();
     }
 
     @Override
