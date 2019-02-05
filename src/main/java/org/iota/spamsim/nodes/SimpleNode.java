@@ -29,15 +29,29 @@ public class SimpleNode implements Node {
 
         for(Node nb : neighbors)
             for(TransactionTransfer outgoing : outgoingTransfers)
-                if(outgoing.sender != nb)
+                if(outgoing.sender != nb) {
                     nb.receiveTransactionTransfer(new TransactionTransfer(this, outgoing.transaction));
+                }
 
         outgoingTransfers = new HashSet<>();
     }
 
     public void emitNewTransactions() {
-        for(int i = 0; i < emissionRate; i++)
-            outgoingTransfers.add(new TransactionTransfer(this, new Transaction(this)));
+
+        List<Transaction> tipPool = new LinkedList<>();
+        for(TransactionTransfer transactionTransfer : incomingTransfers)
+            tipPool.add(transactionTransfer.transaction);
+
+        for(int i = 0; i < emissionRate; i++) {
+            Transaction randomBranch = pickRandomTransaction(tipPool);
+            Transaction randomTrunk = pickRandomTransaction(tipPool);
+            Transaction transaction = new Transaction(this, randomBranch, randomTrunk);
+            outgoingTransfers.add(new TransactionTransfer(this, transaction));
+        }
+    }
+
+    private static Transaction pickRandomTransaction(List<Transaction> pool) {
+        return pool.size() == 0 ? null : pool.get((int)(Math.random()*pool.size()));
     }
 
     @Override
@@ -51,9 +65,23 @@ public class SimpleNode implements Node {
             if(acceptTransfer(incoming)) {
                 outgoingTransfers.add(incoming);
                 tangle.add(incoming.transaction);
+                requestTransactionIfNotInTangle(incoming.transaction.branch);
+                requestTransactionIfNotInTangle(incoming.transaction.trunk);
             }
         }
         incomingTransfers = new HashSet<>();
+    }
+
+    private void requestTransactionIfNotInTangle(Transaction transaction) {
+        if(!tangle.contains(transaction) && transaction != null && anyNeighborKnowsTransaction(transaction))
+            tangle.add(transaction);
+    }
+
+    private boolean anyNeighborKnowsTransaction(Transaction transaction) {
+        for(Node neighbor : neighbors)
+            if(neighbor.knowsTransact(transaction))
+                return true;
+        return false;
     }
 
     protected boolean acceptTransfer(TransactionTransfer transactionTransfer) {
@@ -66,6 +94,11 @@ public class SimpleNode implements Node {
             if(transaction.issuer == issuer)
                 amount++;
         return amount;
+    }
+
+    @Override
+    public boolean knowsTransact(Transaction transaction) {
+        return tangle.contains(transaction);
     }
 
     public int getAmountOfNeighbors() {

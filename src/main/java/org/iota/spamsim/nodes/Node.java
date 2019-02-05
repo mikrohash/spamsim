@@ -1,5 +1,6 @@
 package org.iota.spamsim.nodes;
 
+import org.iota.spamsim.network.Transaction;
 import org.iota.spamsim.network.TransactionTransfer;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface Node {
     void submitTransactionsToNeighbors();
 
     void acceptTransactionsFromNeighbors();
+
+    boolean knowsTransact(Transaction transaction);
 
     int transactionsInTangleIssuedBy(Node issuer);
 
