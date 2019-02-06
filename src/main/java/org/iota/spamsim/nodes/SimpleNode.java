@@ -25,7 +25,10 @@ public class SimpleNode implements Node {
 
     public void submitTransactionsToNeighbors() {
 
-        emitNewTransactions();
+        List<Transaction> tipPool = new LinkedList<>();
+        for(TransactionTransfer transactionTransfer : incomingTransfers)
+            tipPool.add(transactionTransfer.transaction);
+        emitNewTransactions(tipPool);
 
         for(Node nb : neighbors)
             for(TransactionTransfer outgoing : outgoingTransfers)
@@ -36,18 +39,16 @@ public class SimpleNode implements Node {
         outgoingTransfers = new HashSet<>();
     }
 
-    public void emitNewTransactions() {
-
-        List<Transaction> tipPool = new LinkedList<>();
-        for(TransactionTransfer transactionTransfer : incomingTransfers)
-            tipPool.add(transactionTransfer.transaction);
-
+    public Set<Transaction> emitNewTransactions(List<Transaction>  tipPool) {
+        Set<Transaction> emitted = new HashSet<>();
         for(int i = 0; i < emissionRate; i++) {
             Transaction randomBranch = pickRandomTransaction(tipPool);
             Transaction randomTrunk = pickRandomTransaction(tipPool);
             Transaction transaction = new Transaction(this, randomBranch, randomTrunk);
+            emitted.add(transaction);
             outgoingTransfers.add(new TransactionTransfer(this, transaction));
         }
+        return emitted;
     }
 
     private static Transaction pickRandomTransaction(List<Transaction> pool) {
