@@ -22,7 +22,13 @@ public class CfbNode extends SimpleNode {
         Collections.shuffle(neighborsOrderedByTransferCount);
         neighborsOrderedByTransferCount.sort((a, b) -> Integer.compare(neighborsTransferCounts[neighbors.indexOf(b)], neighborsTransferCounts[neighbors.indexOf(a)]));
         assert neighborsOrderedByTransferCount.size() == 0 || neighborsTransferCounts[neighbors.indexOf(neighborsOrderedByTransferCount.getFirst())] >= neighborsTransferCounts[neighbors.indexOf((neighborsOrderedByTransferCount).getLast())];
-        ignoredNeighbors = new HashSet<>(neighborsOrderedByTransferCount.subList(0, (int)Math.ceil(neighborsOrderedByTransferCount.size() / 3.0)));
+        double median = neighborsTransferCounts[neighbors.indexOf(neighborsOrderedByTransferCount.get(neighborsOrderedByTransferCount.size()/2))];
+
+        ignoredNeighbors = new HashSet<>();
+
+        for(Node neighbor : neighbors)
+            if(neighborsTransferCounts[neighbors.indexOf(neighbor)] > median * 1.33)
+                ignoredNeighbors.add(neighbor);
 
         super.acceptTransactionsFromNeighbors();
     }
